@@ -14,6 +14,9 @@ class VggConfig():
         if "vgg_11" in self.config_name:
             config = [64, "M", 128, "M", 256, 256, "M", 512, 512, "M", 512, 512, "M"]
             return config, self.use_batch_norm
+        elif "vgg_19" in self.config_name:
+            config = [64, 64, "M", 128, 128, "M", 256, 256, 256, 256, "M", 512, 512, 512, 512, "M", 512, 512, 512, 512, "M"]
+            return config, self.use_batch_norm
         
     def __repr__(self):
         repr = f"VggConfig(): {self.config_name} with batch norm. {self.use_batch_norm}"

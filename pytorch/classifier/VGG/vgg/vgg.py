@@ -1,6 +1,5 @@
 
 
-import torch
 import torch.nn as nn
 
 class VGG(nn.Module):
@@ -8,8 +7,23 @@ class VGG(nn.Module):
         super(VGG, self).__init__()
         self.features = self._create_features_layers(config_name, in_channels=in_channels)
         self.avgPooling = nn.AdaptiveAvgPool2d(output_size=(7, 7))
-        self.flatten = nn.Flatten(start_dim=0, end_dim=-1)
+        self.flatten = nn.Flatten(start_dim=1, end_dim=-1)
         self.classifier = self._create_classifier_layer(num_classes=num_classes)
+        self._initialize_weights()
+    
+    def _initialize_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(
+                    m.weight, mode='fan_out', nonlinearity='relu')
+                if m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.constant_(m.bias, 0)
     
     def _create_features_layers(self, vgg_config, in_channels):
         net_config, use_batch_norm = vgg_config.get_config()
@@ -42,8 +56,7 @@ class VGG(nn.Module):
             nn.Linear(4096, 4096),
             nn.ReLU(True),
             nn.Dropout(),
-            nn.Linear(4096, num_classes),
-            nn.Softmax(dim=0)
+            nn.Linear(4096, num_classes)
         )
         return classifier
          
