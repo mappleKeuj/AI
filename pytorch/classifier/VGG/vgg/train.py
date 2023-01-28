@@ -24,7 +24,7 @@ def train_loop(model, epochs, criterion, optimizer, device, train_dl, val_dl, lo
     dataloader = dict(zip(phases, [train_dl, val_dl]))
 
     # Decay LR by a factor of 0.1 every 7 epochs
-    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.1)
+    # scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.1)
 
     for epoch in range(epochs):
         for phase in phases:
@@ -64,8 +64,8 @@ def train_loop(model, epochs, criterion, optimizer, device, train_dl, val_dl, lo
                 running_loss += loss.item() * imgs.size(0)
                 running_corrects += torch.sum(preds == labels.data)
             
-            if phase == 'train':
-                scheduler.step()
+            # if phase == 'train':
+            #     scheduler.step()
   
             epoch_loss = running_loss / visited
             epoch_acc = running_corrects.double() / visited

@@ -69,7 +69,7 @@ if __name__ == '__main__':
     logging.info("Start training loop")
     epochs=300
     criterion = torch.nn.CrossEntropyLoss().to(device)
-    optimizer = torch.optim.SGD(vgg_model.parameters(), lr=0.001, momentum=0.9)
+    optimizer = torch.optim.SGD(vgg_model.parameters(), lr=0.001, momentum=0.9) 
 
     train_loop(
             model=vgg_model, 
