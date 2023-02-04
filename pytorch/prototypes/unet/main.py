@@ -6,12 +6,12 @@ from unet import UnetGenerator
 
 unet = UnetGenerator(output_nc=4, input_nc=4, num_downs=9)
 unet.eval()
-unet = unet.to("cuda:0")
+unet = unet.to("cpu")
 print(unet)
 
 dummy = torch.rand(1, 4, 512, 512)
-dummy = dummy.to("cuda:0")
-print(dummy)
+dummy = dummy.to("cpu")
+
 start = time.time()
 out = unet(dummy)
 end = time.time()
